@@ -82,6 +82,9 @@ namespace gtsam {
     typedef NonlinearFactorGraph This;
     typedef boost::shared_ptr<This> shared_ptr;
 
+    using FactorFilterFunction = std::function<
+      bool(const Factor* /*factor*/, double /*whitenedError*/, size_t /*index*/)>;
+
     /** Default constructor */
     NonlinearFactorGraph() {}
 
@@ -103,7 +106,8 @@ namespace gtsam {
 
     /** print errors along with factors*/
     void printErrors(const Values& values, const std::string& str = "NonlinearFactorGraph: ",
-                     const KeyFormatter& keyFormatter = DefaultKeyFormatter) const;
+      const KeyFormatter& keyFormatter = DefaultKeyFormatter,
+      boost::optional<const FactorFilterFunction&> printCondition = boost::none) const;
 
     /** Test equality */
     bool equals(const NonlinearFactorGraph& other, double tol = 1e-9) const;
